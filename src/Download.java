@@ -13,6 +13,8 @@ public class Download extends Observable implements Runnable {
     File ofile;
     int stat;
     private int status;
+    ThreadManager thread;
+
     public static final String STATUSES[] = {"Downloading", "Paused", "Complete",};
 
     public static final int DOWNLOADING = 0;
@@ -27,7 +29,7 @@ public class Download extends Observable implements Runnable {
     public void resume() {
         status = DOWNLOADING;
         stateChanged();
-        download();
+       // download();
     }
 
 
@@ -45,14 +47,10 @@ public class Download extends Observable implements Runnable {
     }
 
 
-    Download() {
-        // ?
-    }
-
-    public void download() {
-        Thread thread = new Thread(this);
-        thread.start();
-    }
+//    public void download() {
+//        Thread thread = new Thread(this);
+//        thread.start();
+//    }
 
     public void setLink(String link) {
         this.link = link;
@@ -79,7 +77,7 @@ public class Download extends Observable implements Runnable {
             int read = 0;
             double percentDL = 0.00;
 
-            // Main download loop 
+            // Main download loop
                 System.out.println("status ready");
                 while (((read = bis.read(buffer, 0, 1024)) >= 0) && (status == DOWNLOADING)) {
                     bos.write(buffer, 0, read);
