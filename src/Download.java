@@ -45,15 +45,6 @@ public class Download extends Observable implements Runnable {
     }
 
 
-//    Download(String link, String ofilePath) {
-//        this.link = link;
-//        this.ofilePath = ofilePath;
-//        ofile = new File(ofilePath);
-////        if (status == DOWNLOADING) {
-////            download();
-////        }
-//    }
-
     Download() {
         // ?
     }
@@ -75,25 +66,22 @@ public class Download extends Observable implements Runnable {
     public void run() {
         try {
             URL url = new URL(link);
-
-            System.out.println(link + "   1");
-            System.out.println(ofilePath + "   1");
-
             ofile = new File(ofilePath);
+
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             double filesize = (double) http.getContentLength();
-            BufferedInputStream bis = new BufferedInputStream(http.getInputStream());
 
+            BufferedInputStream bis = new BufferedInputStream(http.getInputStream());
             FileOutputStream fos = new FileOutputStream(ofile);
             BufferedOutputStream bos = new BufferedOutputStream(fos, 1024);
             byte[] buffer = new byte[1024];
             double downloaded = 0.00;
             int read = 0;
             double percentDL = 0.00;
-            System.out.println(link + "2");
-            while (status == DOWNLOADING) {
-                System.out.println( "status ready");
-                while ((read = bis.read(buffer, 0, 1024)) >= 0) {
+
+            // Main download loop 
+                System.out.println("status ready");
+                while (((read = bis.read(buffer, 0, 1024)) >= 0) && (status == DOWNLOADING)) {
                     bos.write(buffer, 0, read);
                     downloaded += read;
                     percentDL = downloaded * 100 / filesize;
@@ -105,7 +93,7 @@ public class Download extends Observable implements Runnable {
                 bis.close();
 
                 System.out.println("DL done!");
-            }
+
 
         } catch (Exception e) {
             System.out.println(e);

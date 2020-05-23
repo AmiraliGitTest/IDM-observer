@@ -86,7 +86,6 @@ public class DownloadManager extends JFrame implements Observer {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (dl.getStatus() == 0) {
-                        dl.setStatus(1);
                         dl.pause();
                     }
                 } catch (Exception E) {
@@ -95,11 +94,11 @@ public class DownloadManager extends JFrame implements Observer {
             }
         });
 
-        btnpause.addActionListener(new ActionListener() {
+        btnResume.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (dl.getStatus() == 1) {
-                        dl.setStatus(0);
+                        dl.resume();
                     }
                 } catch (Exception E) {
                     System.out.println(E);
